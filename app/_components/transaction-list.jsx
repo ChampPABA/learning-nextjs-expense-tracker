@@ -1,4 +1,15 @@
-export default function TransactionList() {
+import Image from "next/image";
+import UpdateButton from "./update-button";
+import DeleteButton from "./delete-button";
+import { fetchTransactions } from "../libs/data";
+
+export default async function TransactionList({ page = 1 }) {
+  const transactions = await fetchTransactions(page);
+  let options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -24,27 +35,44 @@ export default function TransactionList() {
               </tr>
             </thead>
             <tbody className="bg-white">
-              <tr className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
-                <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src="/food.png"
-                      className="rounded-full"
-                      alt="category"
-                    />
-                    <p>Food</p>
-                  </div>
-                </td>
-                <td className="whitespace-nowrap px-3 py-3">2024/11/11</td>
-                <td className="whitespace-nowrap px-3 py-3">200</td>
-                <td className="whitespace-nowrap px-3 py-3">abcd</td>
-                <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                  <div className="flex justify-end gap-3">
-                    {/* <UpdateButton /> */}
-                    {/* <DeleteButton /> */}
-                  </div>
-                </td>
-              </tr>
+              {transactions.map((transaction) => (
+                <tr
+                  key={transaction.id}
+                  className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
+                >
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={`/${transaction.category.name}.png`}
+                        className="rounded-full"
+                        alt="category"
+                        width={40}
+                        height={40}
+                      />
+                      <p>{transaction.category.name}</p>
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {new Intl.DateTimeFormat("en-US", options).format(
+                      transaction.date
+                    )}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {transaction.description}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {new Intl.NumberFormat("en-US", {
+                      minimumFractionDigits: 2,
+                    }).format(transaction.amount / 100)}
+                  </td>
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                    <div className="flex justify-end gap-3">
+                      <UpdateButton />
+                      <DeleteButton />
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

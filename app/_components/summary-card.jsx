@@ -2,14 +2,14 @@ import {
   BanknotesIcon,
   DocumentTextIcon,
   ListBulletIcon,
-  CurrencyDollarIcon
-} from '@heroicons/react/24/outline';
+  CurrencyDollarIcon,
+} from "@heroicons/react/24/outline";
 
 const iconMap = {
   expense: BanknotesIcon,
   transaction: DocumentTextIcon,
   categoryExpense: CurrencyDollarIcon,
-  categoryTransaction: ListBulletIcon
+  categoryTransaction: ListBulletIcon,
 };
 
 export default async function SummaryCard({ title, value, type }) {
