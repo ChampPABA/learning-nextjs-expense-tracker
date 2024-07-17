@@ -1,10 +1,10 @@
 import Image from "next/image";
 import UpdateButton from "./update-button";
 import DeleteButton from "./delete-button";
-import { fetchTransactions } from "../libs/data";
+import { fetchSearch } from "../libs/data";
 
-export default async function TransactionList({ page = 1 }) {
-  const transactions = await fetchTransactions(page);
+export default async function TransactionList({ page = 1, search }) {
+  const transactions = await fetchSearch(page, search);
   let options = {
     year: "numeric",
     month: "long",

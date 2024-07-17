@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
           <div className="w-64">
             <Navigation />
           </div>
-          <div className="flex-grow p-12">{children}</div>
+          <div className="flex-grow p-">{children}</div>
         </div>
       </body>
     </html>

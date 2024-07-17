@@ -47,10 +47,31 @@ export async function fecthLatestTransaction() {
   });
 }
 
-export async function fetchTransactions(page) {
-  return prisma.transaction.findMany({
+export async function fetchSearch(page, term) {
+  return await prisma.transaction.findMany({
+    where: {
+      OR: [
+        { description: { contains: term } },
+        { category: { name: { contains: term } } },
+        // { date: { contains: term } },
+        // { amount: { equals: Number(term) } },
+      ],
+    },
     include: { category: true },
     take: 5,
     skip: (page - 1) * 5,
   });
+
+  // const total = await prisma.transaction.count({
+  //   where: {
+  //     OR: [
+  //       { description: { contains: term } },
+  //       { category: { name: { contains: term } } },
+  //       { date: { contains: term } },
+  //       { amount: { equals: Number(term) } },
+  //     ],
+  //   },
+  // });
+
+  // return { transactions, total };
 }
