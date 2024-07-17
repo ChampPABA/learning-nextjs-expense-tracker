@@ -8,6 +8,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import clsx from "clsx";
 
 const links = [
   { name: "Dashboard", href: "/", icon: HomeIcon },
@@ -34,16 +35,18 @@ export default function Navigation() {
         </span>
       </Link>
       <div className="flex flex-col grow gap-2">
-        {links.map((link, index) => (
+        {links.map(({ name, href, icon: Icon }, index) => (
           <Link
             key={index}
-            href={link.href}
-            className={`flex items-center gap-2 rounded-md  p-4 text-sm font-medium hover:bg-rose-50 hover:text-red-500 ${
-              pathName === link.href ? "text-red-500 bg-rose-50" : "bg-gray-50"
-            }`}
+            href={href}
+            className={clsx(
+              "flex items-center gap-2 rounded-md p-4 text-sm font-medium hover:bg-rose-50 hover:text-red-500",
+              { "bg-rose-50 text-red-500": pathName === href },
+              { "bg-gray-50": pathName !== href }
+            )}
           >
-            <link.icon className="w-6" />
-            <p>{link.name}</p>
+            <Icon className="w-6" />
+            <p>{name}</p>
           </Link>
         ))}
       </div>

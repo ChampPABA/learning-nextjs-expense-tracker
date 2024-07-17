@@ -13,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={robotoFlex.className}>
+      <body className={`${robotoFlex.className} antialiased`}>
         <div className="flex h-screen">
           <div className="w-64">
             <Navigation />
