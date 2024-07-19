@@ -3,18 +3,22 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function Pagination({ totalPages }) {
   const params = useSearchParams();
-
-  const page = params.get("page");
-
-  const currentPage = +page || 1;
+  const pathname = usePathname();
+  const currentPage = Number(params.get("page")) || 1;
   const allPages = generatePagination(currentPage, totalPages);
 
   const createPageURL = (pageNumber) => {
-    return `/transactions?page=${pageNumber}`;
+    const searchParams = new URLSearchParams(params);
+    if (pageNumber === 1) {
+      searchParams.delete("page");
+    } else {
+      searchParams.set("page", pageNumber);
+    }
+    return `${pathname}?${searchParams.toString()}`;
   };
 
   return (

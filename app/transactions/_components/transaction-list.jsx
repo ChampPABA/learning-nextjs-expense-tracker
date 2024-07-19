@@ -1,7 +1,8 @@
 import Image from "next/image";
+
 import UpdateButton from "./update-button";
 import DeleteButton from "./delete-button";
-import { fetchSearch } from "../libs/data";
+import { fetchSearch } from "@/app/libs/data";
 
 export default async function TransactionList({ page = 1, search }) {
   const transactions = await fetchSearch(page, search);
@@ -67,8 +68,8 @@ export default async function TransactionList({ page = 1, search }) {
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateButton />
-                      <DeleteButton />
+                      <UpdateButton id={transaction.id} />
+                      <DeleteButton id={transaction.id} />
                     </div>
                   </td>
                 </tr>

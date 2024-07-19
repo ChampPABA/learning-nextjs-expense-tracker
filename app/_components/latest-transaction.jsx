@@ -1,6 +1,9 @@
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { fecthLatestTransaction } from "../libs/data";
+import { getCategoryImageMapping } from "../libs/utils";
+
+const categoryMapping = getCategoryImageMapping();
 
 export default async function LatestTransaction() {
   const transactions = await fecthLatestTransaction();
@@ -24,8 +27,8 @@ export default async function LatestTransaction() {
                     src={`/${transaction.category.name}.png`}
                     alt=""
                     className="mr-4 rounded-full"
-                    width={40}
-                    height={40}
+                    width={32}
+                    height={32}
                   />
                   <div className="min-w-0">
                     <p className="truncate font-semibold">

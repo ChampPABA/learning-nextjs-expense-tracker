@@ -1,13 +1,16 @@
+import { fetchCategory } from "@/app/libs/data";
 import {
   CurrencyDollarIcon,
   ListBulletIcon,
   CalendarDaysIcon,
-  DocumentTextIcon
-} from '@heroicons/react/24/outline';
+  DocumentTextIcon,
+} from "@heroicons/react/24/outline";
+import { createTransaction } from "../_lib/action";
 
-export default function CreateForm() {
+export default async function CreateForm() {
+  const categories = await fetchCategory();
   return (
-    <form>
+    <form action={createTransaction}>
       <div className="rounded-md bg-gray-50 p-6">
         <div className="mb-4">
           <label htmlFor="category" className="mb-2 block text-sm font-medium">
@@ -23,11 +26,11 @@ export default function CreateForm() {
               <option value="" disabled>
                 Select a category
               </option>
-              {/* {categories.map(category => (
+              {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
-              ))} */}
+              ))}
             </select>
             <ListBulletIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>

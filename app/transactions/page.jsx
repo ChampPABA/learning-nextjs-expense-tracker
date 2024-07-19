@@ -1,15 +1,22 @@
-import CreateButton from "../_components/create-button";
-import Pagination from "../_components/pagination";
-import Search from "../_components/search";
-import TransactionList from "../_components/transaction-list";
-import { fetchSearch, fetchTotalTransaction } from "../libs/data";
+import CreateButton from "./_components/create-button";
+import Pagination from "./_components/pagination";
+import Search from "./_components/search";
+
+import { fetchSearchTotal } from "../libs/data";
+import TransactionList from "./_components/transaction-list";
+import { TableSkeleton } from "../_components/skeleton";
+import { Suspense } from "react";
+
+export const metadata = {
+  title: "Transactions",
+};
 
 export default async function Page({ searchParams }) {
-  const totalTransactions = await fetchTotalTransaction();
-  // console.log(totalTransactions);
-
   const search = searchParams.search || "";
-  const page = searchParams.page || 1;
+  const page = +searchParams.page || 1;
+
+  const totalTransactions = await fetchSearchTotal(search);
+  // console.log(totalTransactions);
 
   return (
     <main className="w-full">
@@ -20,7 +27,10 @@ export default async function Page({ searchParams }) {
         <Search placeholder="Search transactions..." />
         <CreateButton />
       </div>
-      <TransactionList search={search} page={page} />
+      <Suspense fallback={<TableSkeleton />}>
+        <TransactionList search={search} page={page} />
+      </Suspense>
+
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={Math.ceil(totalTransactions / 5)} />
       </div>

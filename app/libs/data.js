@@ -60,18 +60,25 @@ export async function fetchSearch(page, term) {
     include: { category: true },
     take: 5,
     skip: (page - 1) * 5,
+    orderBy: {
+      date: "desc",
+    },
   });
+}
 
-  // const total = await prisma.transaction.count({
-  //   where: {
-  //     OR: [
-  //       { description: { contains: term } },
-  //       { category: { name: { contains: term } } },
-  //       { date: { contains: term } },
-  //       { amount: { equals: Number(term) } },
-  //     ],
-  //   },
-  // });
+export async function fetchSearchTotal(term) {
+  return await prisma.transaction.count({
+    where: {
+      OR: [
+        { description: { contains: term } },
+        { category: { name: { contains: term } } },
+        // { date: { contains: term } },
+        // { amount: { equals: Number(term) } },
+      ],
+    },
+  });
+}
 
-  // return { transactions, total };
+export async function fetchCategory() {
+  return await prisma.category.findMany();
 }
